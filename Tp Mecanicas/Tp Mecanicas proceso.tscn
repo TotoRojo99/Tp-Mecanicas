@@ -1,0 +1,81 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://KinematicBody2D.gd" type="Script" id=1]
+[ext_resource path="res://Timersalto.gd" type="Script" id=2]
+[ext_resource path="res://The_Knight.png" type="Texture" id=3]
+[ext_resource path="res://Switch_HollowKnight_description-char.png" type="Texture" id=4]
+[ext_resource path="res://icon.png" type="Texture" id=5]
+
+[sub_resource type="CapsuleShape2D" id=1]
+radius = 27.7778
+height = 38.0741
+
+[sub_resource type="CapsuleShape2D" id=2]
+radius = 27.7037
+height = 37.3333
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ), ExtResource( 4 ) ],
+"loop": false,
+"name": "golpe",
+"speed": 5.0
+} ]
+
+[sub_resource type="RectangleShape2D" id=4]
+extents = Vector2( 1003.75, 21 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="KinematicBody2D" type="KinematicBody2D" parent="."]
+position = Vector2( 246, 109 )
+script = ExtResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="KinematicBody2D"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D/Area2D"]
+shape = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="KinematicBody2D"]
+position = Vector2( 2, -0.370361 )
+shape = SubResource( 2 )
+
+[node name="Timerdash" type="Timer" parent="KinematicBody2D"]
+wait_time = 0.5
+script = ExtResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="KinematicBody2D"]
+position = Vector2( 1.50002, -4.00002 )
+scale = Vector2( 0.565758, 0.531772 )
+frames = SubResource( 3 )
+
+[node name="Dash" type="Timer" parent="KinematicBody2D"]
+wait_time = 0.25
+
+[node name="velgolpe" type="Timer" parent="KinematicBody2D"]
+wait_time = 1.5
+
+[node name="saltogrande" type="Timer" parent="KinematicBody2D"]
+wait_time = 0.5
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+position = Vector2( 298, 283 )
+
+[node name="Sprite" type="Sprite" parent="StaticBody2D"]
+position = Vector2( 1.49997, -0.5 )
+scale = Vector2( 31.3906, 0.609375 )
+texture = ExtResource( 5 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+shape = SubResource( 4 )
+
+[connection signal="timeout" from="KinematicBody2D/Timerdash" to="KinematicBody2D/Timerdash" method="_on_Timerdash_timeout"]
+[connection signal="timeout" from="KinematicBody2D/Timerdash" to="KinematicBody2D" method="_on_Timerdash_timeout"]
+[connection signal="timeout" from="KinematicBody2D/Dash" to="KinematicBody2D" method="_on_Dash_timeout"]
+[connection signal="timeout" from="KinematicBody2D/velgolpe" to="KinematicBody2D" method="_on_velgolpe_timeout"]
+[connection signal="timeout" from="KinematicBody2D/saltogrande" to="KinematicBody2D" method="_on_saltogrande_timeout"]
